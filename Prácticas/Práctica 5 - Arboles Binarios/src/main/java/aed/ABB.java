@@ -4,281 +4,234 @@ package aed;
 // elem1.compareTo(elem2) devuelve un entero. Si es mayor a 0, entonces elem1 > elem2
 public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     // Agregar atributos privados del Conjunto
-    private Nodo raiz;
-    private int elementos;
+    private Nodo root;
 
     private class Nodo {
         // Agregar atributos privados del Nodo
 
         // Crear Constructor del nodo
-        Nodo padre;
-        Nodo izq;
-        Nodo der;
-        private T valor;
+        Nodo father;
+        Nodo left;
+        Nodo right;
+        private T value;
 
         public Nodo() {
-            this.padre = null;
-            this.izq = null;
-            this.der = null;
-            this.valor = null;
+            this.father = null;
+            this.left = null;
+            this.right = null;
+            this.value = null;
         }
 
-        public int cantidadHijos() {
-            if(this.izq != null && this.der != null) {
+        public int getChildrenAmount() {
+            if(this.left != null && this.right != null) {
                 return 2;
-            } else if(this.izq != null || this.der != null){ 
+            } else if(this.left != null || this.right != null){ 
                 return 1;
             }
             return 0;
         }
+
+        public int compareValue(T value) {
+            return this.value.compareTo(value);
+        }
     }
 
     public ABB() {
-        this.raiz = null;
-        this.elementos = 0;
+        this.root = null;
+    }
+
+    private boolean isEmpty() {
+        return this.root == null;
     }
 
     public int cardinal() {
-        return this.elementos;
+        return this.cardinal(this.root);
+    }
+
+    private int cardinal(Nodo n) {
+        if(n == null) {
+            return 0;
+        }
+
+        return 1 + this.cardinal(n.left) + this.cardinal(n.right);
     }
 
     public T minimo(){
-        Nodo minimoNodo = this.minimo(this.raiz);
-
-        return minimoNodo.valor;
+        return this.minimumNode(this.root).value;
     }
 
-    private Nodo minimo(Nodo n){
-        if(n.izq == null) {
-            return n;
+    private Nodo minimumNode(Nodo root) {
+        Nodo n = root;
+        while(n.left != null) {
+            n = n.left;
         }
 
-        return this.minimo(n.izq);
+        return n;
     }
 
     public T maximo(){
-        Nodo maximoNodo = this.maximo(this.raiz);
-
-        return maximoNodo.valor;
+        return this.maximumNode(this.root).value;
     }
 
-    private Nodo maximo(Nodo n){
-        if (n.der == null) {
-            return n;
+    private Nodo maximumNode(Nodo n) {
+        while(n.right != null) {
+            return maximumNode(n.right);
         }
 
-        return maximo(n.der);
+        return n;
     }
 
     public void insertar(T elem){
-        if(this.raiz == null) {
-            this.raiz = new Nodo();
-            this.raiz.valor = elem;
-            this.elementos += 1;
-        } else if(!this.pertenece(elem)) {
-            this.insertar(this.raiz, elem);
-        }
-    }
+        if(!this.pertenece(elem)) {
+            if(this.isEmpty()) {
+                Nodo n = new Nodo();
+                n.value = elem;
 
-    public void insertar(Nodo n, T elem) {
-        int resto = elem.compareTo(n.valor);
-        if(resto != 0) {
-            if((n.izq == null && resto < 0)||(n.der == null && resto > 0)) {
-                Nodo nuevoNodo = new Nodo();
-                nuevoNodo.padre = n;
-                nuevoNodo.valor = elem;
-                this.elementos += 1;
-                if(n.izq == null && resto < 0) {
-                    n.izq = nuevoNodo;
-                } else {
-                    n.der = nuevoNodo;
+                this.root = n;
+            } else {
+                Nodo current = this.root;
+                Nodo father = null;
+
+                while(current != null) {
+                    boolean isCurrentBigger = current.compareValue(elem) > 0;
+                    father = current;
+
+                    if(isCurrentBigger) {
+                        current = current.left;
+                    } else {
+                        current = current.right;
+                    }
                 }
-            } else if(resto < 0 && n.izq != null) {
-                insertar(n.izq, elem);
-            } else if(resto > 0 && n.der != null)  {
-                insertar(n.der, elem);
+
+                Nodo newNode = new Nodo();
+                newNode.value = elem;
+                newNode.father = father;
+                boolean isFatherBigger = father.compareValue(elem) > 0;
+                if(isFatherBigger) {
+                   father.left = newNode;
+                } else {
+                   father.right = newNode;
+                }
             }
+
         }
     }
 
     public boolean pertenece(T elem){
-        return pertenece(this.raiz, elem);
-    }
+        Nodo n = findNode(elem);
 
-    public boolean pertenece(Nodo n, T elem) {
-        if(n == null) {
-            return false;
+        return n != null;
+    }
+    
+    private Nodo findNode(T elem) {
+        Nodo n = this.root;
+
+        while(n != null) {
+            int nodeDiff = n.compareValue(elem);
+            if(nodeDiff != 0) {
+                n = nodeDiff > 0 ? n.left : n.right;
+            } else {
+                return n;
+            }
         }
 
-        int resto = elem.compareTo(n.valor);
-        Nodo nuevoNodo = resto > 0 ? n.der : n.izq;
-
-        return resto == 0 || this.pertenece(nuevoNodo, elem);
+        return n;
     }
 
     public void eliminar(T elem){
-        if(this.pertenece(elem)) {
-            eliminar(this.raiz, elem);
+        Nodo n = findNode(elem);
+
+        if(n != null) {
+            this.deleteNode(n);
         }
     }
 
-    private void eliminar(Nodo n, T elem){
-        int resto = elem.compareTo(n.valor);
-        if(resto == 0) {
-            eliminarNodo(n);
-        } else if(n != null) {
-            n = resto > 0 ? n.der : n.izq;
-            eliminar(n, elem);
-        }
-    }
+    private void deleteNode(Nodo n) {
+        int childrenAmount = n.getChildrenAmount();
 
-    private void eliminarNodo(Nodo n) {
-        if(n.padre == null && this.elementos == 0) {
-            this.raiz = null;
+        if(childrenAmount == 2) {
+            Nodo minRight = this.minimumNode(n.right);
+            T newValue = minRight.value;
+            this.deleteNode(minRight);
+
+            n.value = newValue;
         } else {
-            int cantidadDeHijos = n.cantidadHijos();
-
-            if(cantidadDeHijos == 0) {
-                int restoHijo = n.valor.compareTo(n.padre.valor);
-                if(restoHijo > 0) {
-                    n.padre.der = null;
-                } else {
-                    n.padre.izq = null;
-                }
-                n = null;
-            } else if(cantidadDeHijos == 1) {
-                Nodo padre = n.padre;
-                if(n.izq != null) {
-                    n = n.izq;
-                    padre.izq = n;
-                } else {
-                    n = n.der;
-                    padre.der = n;
-                    // n.padre = padre;
-                }
-            } else {
-                Nodo minimoDerecha = this.minimo(n.der);
-                Nodo minimoPadre = minimoDerecha.padre;
-                n.valor = minimoDerecha.valor;
-
-                if(minimoDerecha.der != null && minimoDerecha.padre != null) {
-                    minimoDerecha.der.padre = minimoPadre;
-                }
-                minimoPadre.izq = minimoDerecha.der != null ? minimoDerecha.der : null;
-                minimoDerecha = minimoDerecha.der;
-            }
-        }
-
-        this.elementos -= 1;
+            this.replaceNode(n, n.left != null ? n.left : n.right);
+        }    
     }
 
-    public Nodo sucesor(Nodo inicio){
-        if(inicio.der != null) {
-            return minimo(inicio.der);
-        }
-
-        if(inicio.valor.compareTo(this.maximo(this.raiz).valor) == 0) {
-            return inicio;
-        }
-        /* 
-        if(inicio.padre == null) {
-            return inicio;
-        }
-        if(inicio.padre.valor.compareTo(inicio.valor) > 0) {
-            return inicio.padre;
-        }
-        */
-
-        Nodo ret = subir(inicio, inicio);
-        return ret;
-    }
-
-    private Nodo subir(Nodo inicio, Nodo origen) {
-        if(inicio.padre == null) {
-            return origen;
-        }
-        Nodo padre = inicio.padre;
-        int restoPadreInicio = padre.valor.compareTo(inicio.valor);
-        if(restoPadreInicio < 0) {
-            return subir(padre, origen);
+    private void replaceNode(Nodo oldNode, Nodo newNode) {
+        if(oldNode.father == null) {
+            this.root = newNode;
+        } else if (oldNode == oldNode.father.left) {
+            oldNode.father.left = newNode;
         } else {
-            return padre;
+            oldNode.father.right = newNode;
         }
 
-        /* 
-        if(inicio.padre == null) {
-            int restoInicio = inicio.valor.compareTo(origen.valor);
-            if(restoInicio < 0) {
-                return inicio.der;
-            } else if(restoInicio > 0) {
-                return null;
-            }
+        if(newNode != null) {
+            newNode.father = oldNode.father;
+        }
+    }
 
-            return inicio;
+    public Nodo getNext(Nodo start) {
+        if(start == null) {
+            return null;
         }
 
-        Nodo padre = inicio.padre;
-        int restoPadre = padre.valor.compareTo(inicio.valor);
-        if(restoPadre < 0) {
-            return subir(padre, origen);
-        } else if(restoPadre != 0) {
-            return padre;
+        if(start.right != null) {
+            return minimumNode(start.right);
         }
-        
-        return null;
-        */
 
+        Nodo father = start.father;
+        while(father != null && start == father.right)  {
+            start = father;
+            father = start.father;
+        }
+
+        return father;
     }
 
     public String toString(){
-        StringBuffer stringBuffer = new StringBuffer();
-        Iterador<T> iterador = this.iterador();
-        T siguiente;
+        String ret = "{";
+        Iterador<T> iterator = this.iterador();
 
-        stringBuffer.append("{");
-        if(iterador.haySiguiente()) {
-            siguiente = iterador.siguiente();
-            stringBuffer.append(siguiente);
+        if(iterator.haySiguiente()) {
+            ret += iterator.siguiente();
         }
 
-        while(iterador.haySiguiente()) {
-            siguiente = iterador.siguiente();
-
-            stringBuffer.append("," + siguiente);
+        while(iterator.haySiguiente()) {
+            ret += "," + iterator.siguiente();
         }
-        stringBuffer.append("}");
 
-        return stringBuffer.toString();
+        ret += "}";
+
+
+        return ret;
     }
 
     private class ABB_Iterador implements Iterador<T> {
-        private Nodo _actual;
-        private int n;
+        private Nodo current;
 
         public ABB_Iterador(){
-            this._actual = minimo(raiz);
-            n = 0;
+            this.current = minimumNode(root);
         }
 
-        public boolean haySiguiente() {            
-            // return this._actual != null;
-            return n < elementos;
+        public boolean haySiguiente() {        
+            return this.current != null;
         }
     
         public T siguiente() {
-            T siguienteValor = this._actual.valor;
-            Nodo sucesor = sucesor(this._actual);
-            // this._actual = sucesor.valor.compareTo(siguienteValor) != 0 ? sucesor : null;
-            this._actual = sucesor;
+            T nextValue = this.current.value;
+            Nodo nextNode = getNext(this.current);
+            this.current = nextNode;
 
-            n+=1;
 
-            return siguienteValor;
+            return nextValue;
         }
     }
 
     public Iterador<T> iterador() {
         return new ABB_Iterador();
     }
-
 }
