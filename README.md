@@ -16,6 +16,6 @@ Repositorio de Algoritmos y Estructuras de Datos I (me gusta mas como suena)
 
 ## [Trabajos Prácticos](/Trabajos%20Prácticos/)
 
-| Trabajo Práctico               | Enunciado                                              |
-| ------------------------------ | ------------------------------------------------------ |
-| [1](/Trabajos%20Prácticos/TP1) | [Fondo Común](/Trabajos%20Prácticos/TP1/enunciado.pdf) |
+| Trabajo Práctico                                | Enunciado                                              | Solución                                       |
+| ----------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------- |
+| [1 - Especificación](/Trabajos%20Prácticos/TP1) | [Fondo Común](/Trabajos%20Prácticos/TP1/enunciado.pdf) | [Solución](/Trabajos%20Prácticos/TP1/main.tex) |
