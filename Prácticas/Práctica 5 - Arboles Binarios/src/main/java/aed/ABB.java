@@ -22,13 +22,8 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             this.value = null;
         }
 
-        public int getChildrenAmount() {
-            if(this.left != null && this.right != null) {
-                return 2;
-            } else if(this.left != null || this.right != null){ 
-                return 1;
-            }
-            return 0;
+        public boolean hasTwoChildren() {
+            return this.left != null && this.right != null;
         }
 
         public int compareValue(T value) {
@@ -147,9 +142,9 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     private void deleteNode(Nodo n) {
-        int childrenAmount = n.getChildrenAmount();
+        boolean hasTwoChildren = n.hasTwoChildren();
 
-        if(childrenAmount == 2) {
+        if(hasTwoChildren) {
             Nodo minRight = this.minimumNode(n.right);
             T newValue = minRight.value;
             this.deleteNode(minRight);
