@@ -1,6 +1,6 @@
 # AyED-II
 
-Repositorio de Algoritmos y Estructuras de Datos I (me gusta mas como suena)
+Repositorio de Algoritmos y Estructuras de Datos II
 
 > Muy posiblemente hayan errores y algunos ejercicios que quedaron en el olvido
 
