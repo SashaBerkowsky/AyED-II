@@ -4,7 +4,7 @@ Repositorio de Algoritmos y Estructuras de Datos I (me gusta mas como suena)
 
 > Muy posiblemente hayan errores y algunos ejercicios que quedaron en el olvido
 
-## [Prácticas](https://github.com/SashaBerkowsky/AyED-I/tree/main/Pr%C3%A1cticas)
+## [Talleres](/Talleres/)
 
 | Práctica                                    | Enunciado                                                                           | Solución                                                                                        |
 | ------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
