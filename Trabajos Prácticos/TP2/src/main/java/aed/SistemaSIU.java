@@ -21,13 +21,13 @@ public class SistemaSIU {
         this._estudiantes = new DiccionarioDigital<Estudiante>();
         this._materias = new ArrayList<Materia>();
 
+        // materiasEnCarreras contiene |M_c| veces la carrera c
+        // recorre todas las materias
+        for(int i = 0; i < materiasEnCarreras.length; i += 1) {     
+            InfoMateria materia = materiasEnCarreras[i];    
+            this._materias.add(new Materia());           
 
-        for(int i = 0; i < materiasEnCarreras.length; i += 1) { // |M|
-            InfoMateria materia = materiasEnCarreras[i];
-            this._materias.add(new Materia());
-
-            // |materia.nombresEnCarreras| = |materia.carreras| <= |C|
-            for(int j = 0; j < materia.nombresEnCarreras.length; j += 1) { // |M_c|
+            for(int j = 0; j < materia.nombresEnCarreras.length; j += 1) { 
                 String nombreCarrera = materia.carreras[j];
                 String nombreMateria = materia.nombresEnCarreras[j];
 
@@ -41,8 +41,13 @@ public class SistemaSIU {
                 }
 
                 this._materias.get(i).agregarCarrera(nombreCarrera, nombreMateria); // O(1)
-            } // TOTAL CICLO: O(#materia.nombresEnCarreras) = O(|M_c|)
-        } // TOTAL CICLO: O(|nombreCarreras|) + O(|nombreCarreras|) + O(|nombreMaterias|) = O(|nombreCarreras| + |nombreMaterias|)
+
+                // Para cada carrera, se va a agregar a su diccionario correspondiente que toma O(|nombreCarrera|) (Se ejecuta |M_c| veces)
+                // En el peor de los escenarios se tiene que buscar la carrera para ver si existe y luego si no existe, definirla, lo que toma 2*O(|nombreCarrera|) = O(|nombreCarrera|)
+                // Para cada nombre de materia, se agrega al diccionario de materias por medio de nuevaCarrera.crearMateria(...), esto es de O(|nombreMateria|)
+            } 
+        }   // En conclusion, podemos afirmar que la complejidad del ciclo es: O(SUM_|nombreCarrera| * |M_c| + SUM_|nombreMateria|) 
+
 
         for(int i = 0; i < libretasUniversitarias.length; i += 1) {
             Estudiante nuevoEstudiante = new Estudiante();
@@ -50,7 +55,7 @@ public class SistemaSIU {
 
             this._estudiantes.definir(libreta, nuevoEstudiante); // O(|libreta|) = O(1)
         } // TOTAL CICLO: O(#libretasUniversitarias) = O(E)
-    } // TOTAL: O(|nombresCarreras| + |nombreMaterias|) 
+    } // TOTAL: O(SUM_|nombreCarrera| * |M_c| + SUM_|nombreMateria|) + O(E) = O(SUM_|nombreCarrera| * |M_c| + SUM_|nombreMateria| + E)
 
     public void inscribir(String estudiante, String carrera, String materia){
         Materia m = this._obtenerMateria(carrera, materia); // O(|c| + |m|)
@@ -87,24 +92,24 @@ public class SistemaSIU {
     } // TOTAL: O(|c| + |m|)
 
     public void cerrarMateria(String materia, String carrera){
-        Carrera c = this._carreras.obtener(carrera);
+        Carrera c = this._carreras.obtener(carrera); 
         Integer indiceMateria = c.obtenerIndiceMateria(materia);
-        Materia m = this._materias.get(indiceMateria);
+        Materia m = this._materias.get(indiceMateria);  // EXPLICADO EN _obtenerMateria() -> O(|c| + |m|)
 
-        ArrayList<String> carreras = m.obtenerCarreras();
-        ArrayList<String> nombresMateria = m.obtenerNombresMateria();
+        ArrayList<String> carreras = m.obtenerCarreras(); // O(1)
+        ArrayList<String> nombresMateria = m.obtenerNombresMateria(); // O(1)
 
-        for (int i = 0; i < carreras.size(); i += 1) {
+        for (int i = 0; i < carreras.size(); i += 1) {  // |N_m| veces (nombres de la materia)
             String nombreCarreraMateria = carreras.get(i);
             String nombreMateria = nombresMateria.get(i);
 
-            Carrera carreraDeMateria = this._carreras.obtener(nombreCarreraMateria);
-            carreraDeMateria.cerrarMateria(nombreMateria);
-        }
+            Carrera carreraDeMateria = this._carreras.obtener(nombreCarreraMateria);    // O(|nombreMateria|)
+            carreraDeMateria.cerrarMateria(nombreMateria);                              // O(1)
+        } // O(SUM_|nombreMateria|)
 
-        m.vaciarAlumnos();
+        m.vaciarAlumnos(); // O(|E_m|) (cant Estudiantes de la materia)
         this._materias.set(indiceMateria, null);
-    }
+    }   // TOTAL: O(|c| + |m|) + O(SUM_|nombreMateria|) + O(|E_m|) = O(|c| + |m| + SUM_|nombreMateria| + |E_m|)
 
     public int inscriptos(String materia, String carrera){
         Materia m = this._obtenerMateria(carrera, materia); //  O(|c| + |m|)
@@ -126,14 +131,15 @@ public class SistemaSIU {
     }
 
     public String[] materias(String carrera){
-        Carrera c = this._carreras.obtener(carrera);
+        Carrera c = this._carreras.obtener(carrera);    // O(|carrera|)
 
         return c.obtenerMaterias();
     }
 
     public int materiasInscriptas(String estudiante){
-        return this._estudiantes.obtener(estudiante).obtenerCantidadMaterias();
-    }
+        Estudiante e = this._estudiantes.obtener(estudiante);    // O(|estudiante|), como |estudiante| es acotado -> O(1)
+        return e.obtenerCantidadMaterias(); // O(1)
+    }   // TOTAL: O(1)
 
     private Materia _obtenerMateria(String carrera, String materia) {
         Carrera c = this._carreras.obtener(carrera);                // O(|carrera|) = O(|c|)
