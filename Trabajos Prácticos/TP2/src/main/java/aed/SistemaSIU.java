@@ -15,7 +15,6 @@ public class SistemaSIU {
         PROF
     }
 
-    // TODO MODIFICAR COMPLEJIDAD (ESTA MAL HECHO)
     public SistemaSIU(InfoMateria[] materiasEnCarreras, String[] libretasUniversitarias){
         this._carreras = new DiccionarioDigital<Carrera>();
         this._estudiantes = new DiccionarioDigital<Estudiante>();
@@ -104,7 +103,8 @@ public class SistemaSIU {
             String nombreMateria = nombresMateria.get(i);
 
             Carrera carreraDeMateria = this._carreras.obtener(nombreCarreraMateria);    // O(|nombreMateria|)
-            carreraDeMateria.cerrarMateria(nombreMateria);                              // O(1)
+            carreraDeMateria.cerrarMateria(nombreMateria);                              // O(|nombreMateria|)
+            // O(|nombreMateria|) + O(|nombreMateria|) = O(|nombreMateria|)
         } // O(SUM_|nombreMateria|)
 
         m.vaciarAlumnos(); // O(|E_m|) (cant Estudiantes de la materia)

@@ -14,8 +14,8 @@ public class Carrera {
     }
 
     public Integer obtenerIndiceMateria(String nombreMateria) {
-        return this._indiceMaterias.obtener(nombreMateria);
-    }
+        return this._indiceMaterias.obtener(nombreMateria); // O(|nombreMateria|)
+    }   // TOTAL: O(|nombreMateria|)
 
     public String[] obtenerMaterias() {
         String[] clavesMaterias = new String[this._indiceMaterias.tamanio()];
@@ -25,6 +25,6 @@ public class Carrera {
     }
 
     public void cerrarMateria(String nombreMateria) {
-        this._indiceMaterias.borrar(nombreMateria);
-    }
+        this._indiceMaterias.borrar(nombreMateria); // O(|nombreMateria|)
+    } // TOTAL: O(|nombreMateria|)
 }
