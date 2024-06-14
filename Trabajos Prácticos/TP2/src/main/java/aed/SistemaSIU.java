@@ -33,13 +33,14 @@ public class SistemaSIU {
                 Carrera c = this._carreras.obtener(nombreCarrera); // O(|nombreCarrera|)
                 if(c != null) {
                     c.crearMateria(nombreMateria, i);
+                    this._materias.get(i).agregarCarrera(c, nombreMateria); // O(1)
                 } else {
                     Carrera nuevaCarrera = new Carrera();
                     this._carreras.definir(nombreCarrera, nuevaCarrera); // O(|nombreCarrera|)
                     nuevaCarrera.crearMateria(nombreMateria, i);         // O(|nombreMateria|)
+                    this._materias.get(i).agregarCarrera(nuevaCarrera, nombreMateria); // O(1)
                 }
 
-                this._materias.get(i).agregarCarrera(nombreCarrera, nombreMateria); // O(1)
 
                 // Para cada carrera, se va a agregar a su diccionario correspondiente que toma O(|nombreCarrera|) (Se ejecuta |M_c| veces)
                 // En el peor de los escenarios se tiene que buscar la carrera para ver si existe y luego si no existe, definirla, lo que toma 2*O(|nombreCarrera|) = O(|nombreCarrera|)
@@ -95,15 +96,14 @@ public class SistemaSIU {
         Integer indiceMateria = c.obtenerIndiceMateria(materia);
         Materia m = this._materias.get(indiceMateria);  // EXPLICADO EN _obtenerMateria() -> O(|c| + |m|)
 
-        ArrayList<String> carreras = m.obtenerCarreras(); // O(1)
+        ArrayList<Carrera> carreras = m.obtenerCarreras(); // O(1)
         ArrayList<String> nombresMateria = m.obtenerNombresMateria(); // O(1)
 
         for (int i = 0; i < carreras.size(); i += 1) {  // |N_m| veces (nombres de la materia)
-            String nombreCarreraMateria = carreras.get(i);
+            Carrera carreraActual = carreras.get(i);
             String nombreMateria = nombresMateria.get(i);
 
-            Carrera carreraDeMateria = this._carreras.obtener(nombreCarreraMateria);    // O(|nombreMateria|)
-            carreraDeMateria.cerrarMateria(nombreMateria);                              // O(|nombreMateria|)
+            carreraActual.cerrarMateria(nombreMateria);                              // O(|nombreMateria|)
             // O(|nombreMateria|) + O(|nombreMateria|) = O(|nombreMateria|)
         } // O(SUM_|nombreMateria|)
 

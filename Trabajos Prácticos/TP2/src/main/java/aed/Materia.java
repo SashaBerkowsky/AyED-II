@@ -12,7 +12,7 @@ public class Materia {
     private final static int ESTUDIANTES_POR_AY2 = 30;
 
     private DiccionarioDigital<Estudiante> _estudiantes;
-    private ArrayList<String> _carreras;
+    private ArrayList<Carrera> _carreras;
     private ArrayList<String> _nombres;
     private int _profesores;
     private int _jtp;
@@ -21,7 +21,7 @@ public class Materia {
 
     public Materia() {
         this._estudiantes = new DiccionarioDigital<Estudiante>();
-        this._carreras = new ArrayList<String>();
+        this._carreras = new ArrayList<Carrera>();
         this._nombres = new ArrayList<String>();
         this._profesores = 0;
         this._jtp = 0;
@@ -61,12 +61,12 @@ public class Materia {
         return new int[]{ this._profesores, this._jtp, this._ay1, this._ay2 };
     }
 
-    public void agregarCarrera(String nombreCarrera, String nombreMateria) {
-        this._carreras.add(nombreCarrera);
+    public void agregarCarrera(Carrera carrera, String nombreMateria) {
+        this._carreras.add(carrera);
         this._nombres.add(nombreMateria);
     }
 
-    public ArrayList<String> obtenerCarreras() {
+    public ArrayList<Carrera> obtenerCarreras() {
         return this._carreras;
     }
 
