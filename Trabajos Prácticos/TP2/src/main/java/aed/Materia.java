@@ -61,8 +61,11 @@ public class Materia {
         return new int[]{ this._profesores, this._jtp, this._ay1, this._ay2 };
     }
 
-    public void agregarCarrera(Carrera carrera, String nombreMateria) {
+    public void agregarCarrera(Carrera carrera) {
         this._carreras.add(carrera);
+    }
+
+    public void agregarNombre(String nombreMateria) {
         this._nombres.add(nombreMateria);
     }
 

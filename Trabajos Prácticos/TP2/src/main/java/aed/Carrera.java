@@ -2,29 +2,30 @@ package aed;
 
 // InvRep: True
 public class Carrera {
-    private DiccionarioDigital<Integer> _indiceMaterias;
+    private DiccionarioDigital<Materia> _materias;
 
     public Carrera() {
-        this._indiceMaterias = new DiccionarioDigital<Integer>();
-
+        this._materias = new DiccionarioDigital<Materia>();
     }
 
-    public void crearMateria(String nombreMateria, Integer indice) {
-        this._indiceMaterias.definir(nombreMateria, indice);
+    public void agregarMateria(String nombreMateria, Materia materia) {
+        this._materias.definir(nombreMateria, materia);
     }
 
-    public Integer obtenerIndiceMateria(String nombreMateria) {
-        return this._indiceMaterias.obtener(nombreMateria); // O(|nombreMateria|)
+    public Materia obtenerMateria(String nombreMateria) {
+        return this._materias.obtener(nombreMateria); // O(|nombreMateria|)
     }   // TOTAL: O(|nombreMateria|)
 
     public String[] obtenerMaterias() {
-        String[] clavesMaterias = new String[this._indiceMaterias.tamanio()];
-        this._indiceMaterias.obtenerClaves().toArray(clavesMaterias);
+        String[] clavesMaterias = new String[this._materias.tamanio()];
+        this._materias.obtenerClaves().toArray(clavesMaterias);
 
         return clavesMaterias;
     }
 
     public void cerrarMateria(String nombreMateria) {
-        this._indiceMaterias.borrar(nombreMateria); // O(|nombreMateria|)
+        Materia m = this._materias.obtener(nombreMateria);
+        System.out.println(m != null);
+        this._materias.borrar(nombreMateria); // O(|nombreMateria|)
     } // TOTAL: O(|nombreMateria|)
 }
