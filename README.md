@@ -16,6 +16,7 @@ Repositorio de Algoritmos y Estructuras de Datos II
 
 ## [Trabajos Prácticos](/Trabajos%20Prácticos/)
 
-| Trabajo Práctico                                | Enunciado                                              | Solución                                      |
-| ----------------------------------------------- | ------------------------------------------------------ | --------------------------------------------- |
-| [1 - Especificación](/Trabajos%20Prácticos/TP1) | [Fondo Común](/Trabajos%20Prácticos/TP1/enunciado.pdf) | [Solución](/Trabajos%20Prácticos/TP1/tp1.pdf) |
+| Trabajo Práctico                                         | Enunciado                                              | Solución                                                                |
+| -------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------- |
+| [1 - Especificación](/Trabajos%20Prácticos/TP1)          | [Fondo Común](/Trabajos%20Prácticos/TP1/enunciado.pdf) | [Solución](/Trabajos%20Prácticos/TP1/tp1.pdf)                           |
+| [2 - Diseño e Implementación](/Trabajos%20Prácticos/TP2) | [SIU](/Trabajos%20Prácticos/TP2/enunciado.pdf)         | [Solución](/Trabajos%20Prácticos/TP2/src/main/java/aed/SistemaSIU.java) |
