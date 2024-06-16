@@ -24,8 +24,6 @@ public class Carrera {
     }
 
     public void cerrarMateria(String nombreMateria) {
-        Materia m = this._materias.obtener(nombreMateria);
-        System.out.println(m != null);
         this._materias.borrar(nombreMateria); // O(|nombreMateria|)
     } // TOTAL: O(|nombreMateria|)
 }
