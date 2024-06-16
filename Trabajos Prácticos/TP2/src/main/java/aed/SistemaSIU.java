@@ -122,17 +122,14 @@ public class SistemaSIU {
     }   // TOTAL: O(|c| + |m|) + O(1) = O(|c| + |m|)
 
     public String[] carreras(){
-        String[] claves = new String[this._carreras.tamanio()];
-        this._carreras.obtenerClaves().toArray(claves);
-
-        return claves;
+        return this._carreras.obtenerClaves(); // O(SUM_|nombreCarrera|)
     }
 
     public String[] materias(String carrera){
-        Carrera c = this._carreras.obtener(carrera);    // O(|carrera|)
+        Carrera c = this._carreras.obtener(carrera);    // O(|nombreCarrera|)
 
-        return c.obtenerMaterias();
-    }
+        return c.obtenerMaterias();                     // O(SUM_|nombreMateria|)
+    }   // TOTAL: O(|nombreCarrera| + SUM_|nombreMateria|)
 
     public int materiasInscriptas(String estudiante){
         Estudiante e = this._estudiantes.obtener(estudiante);   // O(|estudiante|), como |estudiante| es acotado -> O(1)

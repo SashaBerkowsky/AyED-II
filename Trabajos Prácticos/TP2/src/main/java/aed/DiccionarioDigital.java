@@ -120,27 +120,36 @@ public class DiccionarioDigital<T> implements Diccionario<String,T> {
         return this._tamanio;
     }
 
-    public ArrayList<String> obtenerClaves() {
-        ArrayList<String> claves = new ArrayList<String>();
+    public String[] obtenerClaves() {
+        String[] claves = new String[this._tamanio];
 
-        this._acumularClaves(this._raiz, "", claves);
+        Indice indice = new Indice();
+        this._acumularClaves(this._raiz, "", claves, indice);
 
         return claves;
-    }
+    }   // TOTAL: O(SUM_|clave|) (sumatoria de la longitud de las ditintas claves del diccionario)
 
-    private void _acumularClaves(Nodo n, String prefijo, ArrayList<String> claves) {
+    private void _acumularClaves(Nodo n, String prefijo, String[] claves, Indice indice) {
         if(n != null) {
             if(n._valor != null) {
-                claves.add(prefijo);
+                claves[indice.valor] = prefijo;
+                indice.valor += 1;
             }
 
             for (int i = 0; i < VALORES_ASCII; i += 1) {
                 Nodo nodoActual = n._siguientes.get(i);
 
                 if(nodoActual != null) {
-                    this._acumularClaves(nodoActual, prefijo + (char) i, claves);
+                    this._acumularClaves(nodoActual, prefijo + (char) i, claves, indice);
                 }
             }
         }
+    }
+
+    // Necesitamos guardar el indice en esta clase "wrapper" para poder pasar la referncia del indice en un objeto entre cada paso recursivo
+    // si usasemos un int primitivo como indice estariamos pasando una copia del valor del indice
+    // y los cambios al indice no se reflejarian correctamente
+    private static class Indice {
+        int valor = 0;
     }
 }

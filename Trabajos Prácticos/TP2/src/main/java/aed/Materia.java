@@ -88,10 +88,10 @@ public class Materia {
     } // TOTAL: 5 * O(1) = O(1)
 
     public void vaciarAlumnos() {
-        ArrayList<String> libretas = this._estudiantes.obtenerClaves();
+        String[] libretas = this._estudiantes.obtenerClaves();
 
-        for(int i = 0; i < libretas.size(); i += 1) {
-            Estudiante e = this._estudiantes.obtener(libretas.get(i));
+        for(int i = 0; i < libretas.length; i += 1) {
+            Estudiante e = this._estudiantes.obtener(libretas[i]);
             e.dejarMateria();
         }
     }

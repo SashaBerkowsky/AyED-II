@@ -17,10 +17,7 @@ public class Carrera {
     }   // TOTAL: O(|nombreMateria|)
 
     public String[] obtenerMaterias() {
-        String[] clavesMaterias = new String[this._materias.tamanio()];
-        this._materias.obtenerClaves().toArray(clavesMaterias);
-
-        return clavesMaterias;
+        return this._materias.obtenerClaves();
     }
 
     public void cerrarMateria(String nombreMateria) {

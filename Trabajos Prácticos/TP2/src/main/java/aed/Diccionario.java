@@ -1,7 +1,5 @@
 package aed;
 
-import java.util.ArrayList;
-
 interface Diccionario<K,T> {
     public boolean esta(K key);
 
@@ -15,5 +13,5 @@ interface Diccionario<K,T> {
 
     // Este metodo esta fuera del modulo basico de TAD Diccionario
     // pero nos va a ser muy util
-    public ArrayList<K> obtenerClaves();
+    public K[] obtenerClaves();
 }
