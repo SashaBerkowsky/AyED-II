@@ -17,7 +17,7 @@ public class Carrera {
     }   // TOTAL: O(|nombreMateria|)
 
     public String[] obtenerMaterias() {
-        return this._materias.obtenerClaves();
+        return this._materias.obtenerClaves();        // O(SUM_|nombreMateria|)
     }
 
     public void cerrarMateria(String nombreMateria) {
