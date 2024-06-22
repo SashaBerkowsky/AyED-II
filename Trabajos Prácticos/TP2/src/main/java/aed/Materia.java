@@ -3,8 +3,7 @@ package aed;
 import java.util.ArrayList;
 
 // InvRep:  _profesores, _jtp, _ay1 y _ay2 son todas mayor o igual a 0
-//          La longitud de _carreras y _nombres es la misma (cada materia tiene un nombre por carrera) 
-//          Para cualquier i entre 0 y la longitud de _carreras y _nombres, el _nombre i es el nombre de la materia en la carrera i
+//          La cantidad de carreras, nombres y estudiantes es mayor o igual a 0
 public class Materia {
     private final static int ESTUDIANTES_POR_PROFESOR = 250;
     private final static int ESTUDIANTES_POR_JTP = 100;
@@ -30,15 +29,15 @@ public class Materia {
     }
 
     public void inscribir(String libreta, Estudiante estudiante) {
-        this._estudiantes.definir(libreta, estudiante);
-    }
+        this._estudiantes.definir(libreta, estudiante); //  O(1) (libreta es String acotado)
+    } //    TOTAL: O(1)
 
     public int cantidadEstudiantes() {
         return this._estudiantes.tamanio();
     }
 
     public int cantidadDeMaterias(String libreta) {
-        return this._estudiantes.obtener(libreta).obtenerCantidadMaterias();
+        return this._estudiantes.obtener(libreta).obtenerCantidadMaterias(); // O(1)
     }
 
     public void agregarProfesor() {

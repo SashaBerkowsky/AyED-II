@@ -2,6 +2,8 @@ package aed;
 
 import java.util.ArrayList;
 
+// InvRep: _carreras no admite carreras nulas
+        // La cantidad de carreras y estudiantes son siempre mayor o igual a 0
 public class SistemaSIU {
     // Completar atributos privados
     private DiccionarioDigital<Carrera> _carreras;
@@ -59,11 +61,11 @@ public class SistemaSIU {
     } // TOTAL: O(SUM_|nombreCarrera| * |M_c| + SUM_|nombreMateria|) + O(E) = O(SUM_|nombreCarrera| * |M_c| + SUM_|nombreMateria| + E)
 
     public void inscribir(String estudiante, String carrera, String materia){
-        Materia m = this._obtenerMateria(carrera, materia);     // O(|c| + |m|)
+        Materia m = this._obtenerMateria(carrera, materia);         // O(|c| + |m|)
 
-        Estudiante e = this._estudiantes.obtener(estudiante);   // O(|estudiante|) = O(1)
+        Estudiante e = this._estudiantes.obtener(estudiante);       // O(|estudiante|) = O(1)
+
         e.agregarMateria();
-
         m.inscribir(estudiante, e);                             // O(|estudiante|) = O(1)
     }   // TOTAL: O(|c| + |m|) + O(1) = O(|c| + |m|)
 

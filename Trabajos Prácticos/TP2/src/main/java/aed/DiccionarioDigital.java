@@ -2,6 +2,9 @@ package aed;
 
 import java.util.ArrayList;
 
+// InvRep: Respeta el invariante de representación de un DiccionarioDigital
+// 1. Es un árbol: los nodos tienen un solo padre salvo la raíz la cual no tiene
+// 2. No hay nodos inútiles: si no tienen significado (valor), el nodo tiene hijos
 public class DiccionarioDigital<T> implements Diccionario<String,T> {
     private final static int VALORES_ASCII = 256;
     private Nodo _raiz;
@@ -34,7 +37,7 @@ public class DiccionarioDigital<T> implements Diccionario<String,T> {
             }
 
             return cantHijos;
-        }
+        } // O(1) (Vector de longitud acotada)
     }
 
     public DiccionarioDigital() {
@@ -50,10 +53,10 @@ public class DiccionarioDigital<T> implements Diccionario<String,T> {
             char letra = clave.charAt(clave.charAt(i));
             n = n._siguientes.get((int) letra);
             i += 1;
-        }
+        } // TOTAL CICLO: O(|clave|)
 
         return n != null && n._valor != null;
-    }
+    } // TOTAL: O(|clave|)
 
     public void definir(String clave, T valor) {
         Nodo n = this._raiz;
@@ -70,11 +73,11 @@ public class DiccionarioDigital<T> implements Diccionario<String,T> {
 
             i += 1;
             n = n._siguientes.get((int) letra);
-        }
+        } // TOTAL CICLO: O(|clave|)
 
         this._tamanio += n._valor == null ? 1 : 0;
         n._valor = valor;
-    }
+    } // TOTAL: O(|clave|)
 
     public T obtener(String clave) {
         Nodo n = this._raiz;
@@ -85,10 +88,10 @@ public class DiccionarioDigital<T> implements Diccionario<String,T> {
             n = n._siguientes.get((int) letra);
 
             i += 1;
-        }
+        } // TOTAL CICLO: O(|clave|)
 
         return n != null && n._valor != null ? n._valor : null;
-    }
+    } // TOTAL: O(|clave|)
 
     public void borrar(String clave) {
         Nodo n = this._raiz;
@@ -105,7 +108,7 @@ public class DiccionarioDigital<T> implements Diccionario<String,T> {
             } 
 
             i += 1;
-        }
+        } // TOTAL CICLO: O(|clave|)
 
         n._valor = null;
         if(n.cantidadHijos() == 0) {
@@ -114,7 +117,7 @@ public class DiccionarioDigital<T> implements Diccionario<String,T> {
         }
 
         this._tamanio -= 1;
-    }
+    } // TOTAL: O(|clave|)
 
     public int tamanio() {
         return this._tamanio;
@@ -124,7 +127,7 @@ public class DiccionarioDigital<T> implements Diccionario<String,T> {
         String[] claves = new String[this._tamanio];
 
         Indice indice = new Indice();
-        this._acumularClaves(this._raiz, "", claves, indice);
+        this._acumularClaves(this._raiz, "", claves, indice); // O(SUM_|clave|)
 
         return claves;
     }   // TOTAL: O(SUM_|clave|) (sumatoria de la longitud de las ditintas claves del diccionario)
@@ -144,7 +147,7 @@ public class DiccionarioDigital<T> implements Diccionario<String,T> {
                 }
             }
         }
-    }
+    } 
 
     // Necesitamos guardar el indice en esta clase "wrapper" para poder pasar la referncia del indice en un objeto entre cada paso recursivo
     // si usasemos un int primitivo como indice estariamos pasando una copia del valor del indice
